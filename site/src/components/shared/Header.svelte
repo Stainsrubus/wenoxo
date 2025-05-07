@@ -58,7 +58,7 @@
 		<div class="hidden md:block">
 		  <ul class="flex gap-4 lg:gap-8">
 			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer">Home</li>
-			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer">About Us</li>
+			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer whitespace-nowrap">About Us</li>
 			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer">Services</li>
 			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer">Projects</li>
 			<li class="text-[#838E9E] hover:text-[#0B63E5] transition-colors duration-300 cursor-pointer">Testimonials</li>
@@ -68,7 +68,7 @@
 
 		<!-- Contact Us Button - Desktop -->
 		<div class="hidden md:block">
-		  <button class="bg-[#0B63E5] py-2 lg:py-3 rounded-lg px-4 lg:px-6 text-sm lg:text-base font-semibold text-white hover:bg-[#0950c1] transition-colors duration-300">
+		  <button class="bg-[#0B63E5] whitespace-nowrap py-2 lg:py-3 rounded-lg px-4 lg:px-6 text-sm lg:text-base font-semibold text-white hover:bg-[#0950c1] transition-colors duration-300">
 			Contact Us
 		  </button>
 		</div>
@@ -76,7 +76,7 @@
 		<!-- Hamburger Menu - Mobile -->
 		<div bind:this={hamburgerRef} class="md:hidden cursor-pointer" on:click={toggleMenu}>
 		  <iconify-icon
-			icon={isMenuOpen ? "mdi:close" : "mdi:menu"}
+			icon={isMenuOpen ? "line-md:menu-to-close-transition" : "line-md:close-to-menu-transition"}
 			width="28"
 			height="28"
 			class="text-[#0B63E5] transition-transform duration-700 ease-in-out"
@@ -88,7 +88,7 @@
 	<!-- Mobile Menu Drawer -->
 	<div
 	  bind:this={menuRef}
-	  class={`fixed top-16  hidden right-0 w-64 bg-white shadow-lg h-screen z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+	  class={`fixed top-16 right-0 w-64 bg-white shadow-lg h-screen z-50 transform transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden`}
 	>
 	  <div class="p-6">
 		<ul class="flex flex-col gap-6">
@@ -140,10 +140,10 @@
 	</div>
 
 	<!-- Overlay when menu is open -->
-	{#if isMenuOpen}
+	<!-- {#if isMenuOpen}
 	  <div
 		class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden transition-opacity duration-300"
 		on:click={() => isMenuOpen = false}
 	  ></div>
-	{/if}
+	{/if} -->
 </header>
