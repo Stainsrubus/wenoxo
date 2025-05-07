@@ -54,7 +54,7 @@
   </style>
   
   <main class="relative">
-	<img src={glassmorphism} class="absolute" alt="">
+	<img src={glassmorphism} class="absolute" alt="" loading="eager">
 	<!-- <img src={icons} class="absolute" alt=""> -->
 	<Cursor />
 	<div class="sticky top-0 z-50 backdrop-blur-sm ">
