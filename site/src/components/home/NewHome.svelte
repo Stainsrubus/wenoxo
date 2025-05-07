@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
 
     let scrollContainer: HTMLElement;
+    let imageContainer: HTMLElement;
 
     // Image sources for the carousel
     const imageSources = [
@@ -23,8 +24,9 @@
     ];
 
     onMount(() => {
-        // Only apply scaling logic for desktop (lg and above)
         const isMobile = window.innerWidth < 1024; // Matches lg breakpoint
+
+        // Desktop: Image scaling logic
         if (!isMobile) {
             const updateImageScale = () => {
                 const images = document.querySelectorAll('.right-images img');
@@ -66,11 +68,53 @@
             scrollContainer.addEventListener('scroll', updateImageScale);
             updateImageScale();
 
+            // Handle wheel events on .right-images
+            const handleImageWheel = (event: WheelEvent) => {
+                const { deltaY } = event;
+                const scrollTop = imageContainer.scrollTop;
+                const scrollHeight = imageContainer.scrollHeight;
+                const clientHeight = imageContainer.clientHeight;
+
+                const atTop = scrollTop === 0 && deltaY < 0;
+                const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
+
+                if (atTop || atBottom) {
+                    // Allow event to bubble to scrollContainer and document
+                    return;
+                } else {
+                    event.preventDefault();
+                    imageContainer.scrollTop += deltaY;
+                }
+            };
+
+            imageContainer.addEventListener('wheel', handleImageWheel, { passive: false });
+
             return () => {
                 scrollContainer.removeEventListener('scroll', updateImageScale);
+                imageContainer.removeEventListener('wheel', handleImageWheel);
             };
         }
 
+        // Mobile: Handle wheel events on .wrapper
+        const handleWrapperWheel = (event: WheelEvent) => {
+            const { deltaY } = event;
+            const scrollTop = scrollContainer.scrollTop;
+            const scrollHeight = scrollContainer.scrollHeight;
+            const clientHeight = scrollContainer.clientHeight;
+
+            const atTop = scrollTop === 0 && deltaY < 0;
+            const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
+
+            if (atTop || atBottom) {
+                // Allow event to bubble to document for page scroll
+                return;
+            } else {
+                event.preventDefault();
+                scrollContainer.scrollTop += deltaY;
+            }
+        };
+
+        // Handle wheel events on scrollContainer
         const handleWheel = (event: WheelEvent) => {
             const { deltaY } = event;
             const scrollTop = scrollContainer.scrollTop;
@@ -81,6 +125,7 @@
             const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
 
             if (atTop || atBottom) {
+                // Allow event to bubble to document for page scroll
                 return;
             } else {
                 event.preventDefault();
@@ -89,9 +134,15 @@
         };
 
         scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+        if (isMobile) {
+            imageContainer.addEventListener('wheel', handleWrapperWheel, { passive: false });
+        }
 
         return () => {
             scrollContainer.removeEventListener('wheel', handleWheel);
+            if (isMobile) {
+                imageContainer.removeEventListener('wheel', handleWrapperWheel);
+            }
         };
     });
 </script>
@@ -112,7 +163,7 @@
         <div class="flex flex-col gap-10 pb-48">
             <div class="flex flex-col gap-10 lg:hidden">
                 <!-- Image carousel inside bordered wrapper -->
-                <div class="wrapper lg:hidden">
+                <div class="wrapper lg:hidden" bind:this={imageContainer}>
                     {#each imageSources as src, index}
                         <div class="img-item" style="--i: {index + 1}">
                             <img src={src} alt={`Image ${index + 1}`} class="h-full w-full object-cover" />
@@ -145,7 +196,7 @@
     </div>
 
     <div class="right-section w-1/2 hidden lg:block">
-        <div class="right-images flex flex-col gap-5 items-center p-5">
+        <div class="right-images flex flex-col gap-5 items-center p-5" bind:this={imageContainer}>
             <img src="/pictures/p-1.jpg" alt="Image 1" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
             <img src="/pictures/p-2.jpg" alt="Image 2" class="w-full max-h-[450px] object-contain mb-5 rounded-lg">
             <img src="/pictures/p-3.jpg" alt="Image 3" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
@@ -236,6 +287,10 @@
         flex-grow: 1;
     }
 
+    .right-images {
+        overflow: visible; /* Ensure no unintended scroll trapping */
+    }
+
     .right-images img {
         transform-origin: center;
     }
@@ -244,7 +299,7 @@
         .scroll-container {
             min-height: auto;
             max-height: none;
-            overflow-y: hidden;
+            overflow-y: visible; /* Allow page scroll */
             flex-direction: column;
         }
 
