@@ -69,10 +69,38 @@
 }
 
 @layer base {
+	/* Global scrollbar hiding */
+	html {
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
+	}
+	
+	html::-webkit-scrollbar {
+		display: none;  /* Chrome, Safari and Opera */
+	}
+	
+	/* Hide scrollbars for all elements */
 	* {
 		@apply border-border;
+		-ms-overflow-style: none;  /* IE and Edge */
+		scrollbar-width: none;  /* Firefox */
 	}
+	
+	*::-webkit-scrollbar {
+		display: none;  /* Chrome, Safari and Opera */
+	}
+	
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+/* Additional utility class for when you need selective scrollbar hiding */
+.no-scrollbar {
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+	display: none;  /* Chrome, Safari and Opera */
 }
