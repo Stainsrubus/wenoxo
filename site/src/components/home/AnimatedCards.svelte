@@ -75,76 +75,75 @@
 	}
 </script>
 
-<section class="grid grid-cols-1 lg:grid-cols-2 mt-10 px-4 sm:px-6 md:px-8 lg:px-16 lg:gap-x-6 gap-y-6 md:gap-y-8 lg:gap-y-10 lg:w-5/6 md:w-3/4 w-5/6 mx-auto">
-	{#each cardStates as state, i}
-		<div
-			class="card w-full p-6 sm:p-8 md:p-12 lg:p-14 py-12 sm:py-16 md:py-20 lg:py-24 relative rounded-3xl shadow-lg bg-white will-change-transform"
-			class:even={i % 2 === 0}
-			class:odd={i % 2 !== 0}
-			data-index={i}
-			style="opacity: {easeOutCubic(Math.abs(state.progress))};
-			       transform: {browser && window.innerWidth < 768
-				? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -12 : 12) : (1 - state.progress) * (i % 2 === 0 ? -12 : 12)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
-				: `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -24 : 24) : (1 - state.progress) * (i % 2 === 0 ? -24 : 24)}rem) rotate(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -10 : 10) : (1 - state.progress) * (i % 2 === 0 ? -10 : 10)}deg) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`};"
-		>
-			<div class="card-content relative z-10">
-				<div>
-					{#if i === 0}
+<section class="grid grid-cols-1 lg:grid-cols-2 mt-10 px-4 sm:px-6 md:px-8 lg:px-16 lg:gap-x-6 gap-y-6 md:gap-y-8 lg:gap-y-10 lg:w-5/6 md:w-3/4 w-5/6 mx-auto overflow-hidden">
+	<div class="w-full relative">
+		{#each cardStates as state, i}
+			<div
+				class="card w-full p-6 sm:p-8 md:p-12 lg:p-14 py-12 sm:py-16 md:py-20 lg:py-24 relative rounded-3xl shadow-lg bg-white will-change-transform"
+				class:even={i % 2 === 0}
+				class:odd={i % 2 !== 0}
+				data-index={i}
+				style="opacity: {easeOutCubic(Math.abs(state.progress))};
+					transform: {browser && window.innerWidth < 768
+					? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -8 : 8) : (1 - state.progress) * (i % 2 === 0 ? -8 : 8)}%) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
+					: `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -12 : 12) : (1 - state.progress) * (i % 2 === 0 ? -12 : 12)}%) rotate(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -5 : 5) : (1 - state.progress) * (i % 2 === 0 ? -5 : 5)}deg) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`};"
+			>
+				<div class="card-content relative z-10">
+					<div>
+						{#if i === 0}
+							<p
+								class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-blue-100 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+							>
+							Projects Delivered
+							</p>
+						{:else if i === 1}
+							<p
+								class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-orange-100 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+							>
+							Years Experience
+							</p>
+						{:else if i === 2}
 						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-blue-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
-						>
-						Projects Delivered
-						</p>
-					{:else if i === 1}
-						<!-- <p
-							class="absolute w-fit -top-12 sm:-top-16 md:-top-20 -left-2 sm:-left-3 md:-left-5 text-base sm:text-lg md:text-xl flex items-center"
-						>
-							<img src="/assets/home/icons.svg" alt="Delivered" class="h-16 sm:h-20 md:h-24" />
-						</p> -->
+						class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-pink-100"
+					>
+					Industry Expertise
+					</p>
+						
+						{:else}
 						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-orange-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
-						>
-						Years Experience
-						</p>
-					{:else if i === 2}
-					<p
-					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-pink-100"
-				>
-				Industry Expertise
-				</p>
-					
-					{:else}
-					<p
-					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-indigo-200  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
-				>
-				Satisfied Clients
-				</p>
-					{/if}
-				</div>
+						class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-indigo-200 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+					>
+					Satisfied Clients
+					</p>
+						{/if}
+					</div>
 
-				<p
-					class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-8 sm:mt-10 font-bold text-gray-900"
-				>
-					{i === 0 ? '300' : i === 1 ? '12+' : i === 2 ? '10+' : '150'}
-				</p>
-				<p class="text-base sm:text-lg md:text-xl pt-8 sm:pt-10 md:pt-12 text-gray-600">
-					{i === 0
-						? 'Successful projects completed'
-						: i === 1
-							? 'Years of hands-on experience'
-							: i === 2
-								? 'Industries of Expertise'
-								: 'Clients across diverse industries'}
-				</p>
+					<p
+						class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-8 sm:mt-10 font-bold text-gray-900"
+					>
+						{i === 0 ? '300' : i === 1 ? '12+' : i === 2 ? '10+' : '150'}
+					</p>
+					<p class="text-base sm:text-lg md:text-xl pt-8 sm:pt-10 md:pt-12 text-gray-600">
+						{i === 0
+							? 'Successful projects completed'
+							: i === 1
+								? 'Years of hands-on experience'
+								: i === 2
+									? 'Industries of Expertise'
+									: 'Clients across diverse industries'}
+					</p>
+				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+	</div>
 </section>
 
 <style>
 	section {
 		scroll-behavior: smooth;
 		perspective: 1000px;
+		max-width: 100vw;
+		position: relative;
 	}
 
 	.card {
@@ -152,14 +151,16 @@
 		position: relative;
 		backface-visibility: hidden;
 		transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+		margin-bottom: 2rem;
 	}
 
 	.card.even {
-		margin-bottom: 2.5rem;
+		margin-bottom: 4rem;
 	}
 
 	.card.odd {
-		margin-top: 2.5rem;
+		margin-top: 4rem;
+		margin-bottom: 2rem;
 	}
 
 	.card::before {
@@ -192,8 +193,8 @@
 	@media (max-width: 767px) {
 		.card.even,
 		.card.odd {
-			margin-top: 0;
-			margin-bottom: 0;
+			margin-top: 2rem;
+			margin-bottom: 2rem;
 		}
 	}
 </style>
