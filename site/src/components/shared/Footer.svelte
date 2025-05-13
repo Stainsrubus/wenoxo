@@ -14,8 +14,14 @@
 		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Contacts</a>
 		</nav>
 		<div class="text-2xl md:text-3xl xl:text-4xl lg:text-5xl font-thin font-ct w-full md:w-auto text-left md:text-right">
-		  <p class="break-words">info@wenoxo.in</p>
-		</div>
+			<a 
+			  href="mailto:info@wenoxo.in" 
+			  class="break-words inline-block hover:scale-105 transition-transform duration-300"
+			>
+			  info@wenoxo.in
+			</a>
+		  </div>
+		  
 	  </div>
   
 	  <!-- Divider -->
@@ -28,30 +34,32 @@
 		<!-- Addresses -->
 		<div class="flex justify-center md:justify-start gap-4 md:gap-8 w-full lg:w-auto">
 		  <div>
-			<p class="font-bold text-base text-center md:text-left mb-3 md:mb-4">Raleigh</p>
+			<p class="font-bold text-base text-center md:text-left mb-3 md:mb-4">India</p>
 			<p class="text-white/50 text-center md:text-left text-xs md:text-sm">
-			  125 N Harrington Street<br>
-			  Raleigh,<br>
-			  NC 27603<br>
-			  919.833.6413
+				<a href="tel:+916380058663" class="hover:underline">+91 63800 58663</a><br>
+				No.398A, 2nd Floor,<br>
+				MS Rd, Kattayanvilai,<br>
+				Nagercoil,<br>
+			     Tamil Nadu 629003
 			</p>
 		  </div>
 		  <div>
-			<p class="font-bold text-center md:text-left text-base mb-3 md:mb-4">Charlotte</p>
+			<p class="font-bold text-center md:text-left text-base mb-3 md:mb-4">Oman</p>
 			<p class="text-white/50 text-center md:text-left text-xs md:text-sm">
-			  220 East Peterson Drive<br>
-			  Charlotte,<br>
-			  NC 28217<br>
-			  704.333.7272
+				<a href="tel:+96895661601" class="hover:underline">+968 95661601</a><br>
+			P.O No 684,<br>
+			  Postal Code 114,<br>
+			  Al Misfa, Bousher, Muscat,<br>
+			  Sultanate of Oman
 			</p>
 		  </div>
 		</div>
   
 		<!-- Social links -->
 		<div class="flex flex-row md:flex-col  gap-4 md:gap-6 lg:gap-4">
-		  <a href="#" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Linkedin</a>
-		  <a href="#" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Instagram</a>
-		  <a href="#" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Facebook</a>
+		  <a href="https://www.linkedin.com/company/93224526/admin/dashboard/" target="_blank" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Linkedin</a>
+		  <a href="https://www.instagram.com/wenoxo_technologies/" target="_blank" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Instagram</a>
+		  <a href="https://www.facebook.com/WenoxoTechnologies" target="_blank" class="text-lg md:text-xl text-white/80 hover:text-white transition-colors">Facebook</a>
 		</div>
 	  </div>
   
@@ -59,7 +67,9 @@
 	  <div class="flex flex-col lg:flex-row justify-between items-center gap-8 pt-8 lg:pt-10">
 		<!-- Logo -->
 		<div class="text-5xl md:text-6xl lg:text-7xl xl:text-9xl font-bold relative">
-		  <p>WENOXO<sup class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-thin absolute top-0">®</sup></p>
+		  <p>WENOXO
+			<!-- <sup class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-thin absolute top-0">®</sup> -->
+		</p>
 		</div>
   
 		<!-- Policy links -->

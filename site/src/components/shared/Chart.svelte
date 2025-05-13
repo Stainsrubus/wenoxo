@@ -11,34 +11,46 @@
     const circleData = [
         {
             points: [
-                { label: "A/B Testing", isMain: false },
+                { label: "Deployment", isMain: false },
+                { label: "Monitoring", isMain: false },
+                { label: "Launch", isMain: true },
+                { label: "Support", isMain: false },
                 { label: "", isMain: false },
-                { label: "Experiments", isMain: false },
-                { label: "", isMain: false },
-                { label: "Growth", isMain: true },
-                { label: "Optimization", isMain: false },
-                { label: "", isMain: false },
-                { label: "", isMain: false },
-                { label: "", isMain: false },
+
             ]
         },
         {
             points: [
-                { label: "Development", isMain: false },
+                { label: "Front-End Development,", isMain: false },
+                { label: "", isMain: false },
+                { label: "Backend Development", isMain: false },
+                { label: "Build", isMain: true },
+                { label: "", isMain: false },
+                { label: "Testing", isMain: false },
+                { label: "Quality Assurance", isMain: false },
+
+            ]
+        },
+        {
+            points: [
+                { label: "Information Architecture", isMain: false },
+                { label: "Wireframe", isMain: false },
+                { label: "", isMain: false },
+                { label: "Design", isMain: true },
                 { label: "Visual Design", isMain: false },
-                { label: "Insights", isMain: true },
-                { label: "User Experience", isMain: false },
-                { label: "Innovations", isMain: false },
+                { label: "Prototype", isMain: false },
+                { label: "Test", isMain: false },
  
             ]
         },
         {
             points: [
-                { label: "Product", isMain: true },
-                { label: "Data Science", isMain: false },
-                { label: "UX Research", isMain: false },
+                { label: "Discover", isMain: true },
+                { label: "Business Goals", isMain: false },
+                { label: "User Requirements", isMain: false },
                 { label: "", isMain: false },
-                { label: "UX Strategy", isMain: false }
+                { label: "Market Research", isMain: false },
+                
             ]
         }
     ];
@@ -95,7 +107,7 @@
                 on:mouseenter={() => handleCircleHover(circleIndex)}
                 on:mouseleave={handleCircleLeave}
             >
-                <div class="w-full h-full rounded-full" style="background-color: {['#eee', '#e1e1e1', '#f4f4f4'][circleIndex]};"></div>
+                <div class="w-full h-full rounded-full" style="background-color: {['#eee', '#e1e1e1', '#f4f4f4','#fff'][circleIndex]};"></div>
                 {#each circle.points as point, pointIndex}
                     {@const position = getPointPosition(point, pointIndex, circle.points.length, circleIndex)}
                     {#if isPointVisible(point, circleIndex)}
@@ -103,7 +115,7 @@
                             class="absolute transition-all duration-400"
                             style="left: {position.x}%; top: {position.y}%; transform: translate(-50%, -50%);"
                         >
-                            <div class={`relative ${point.isMain ? 'w-3 h-3' : 'w-1 h-1'}`}>
+                            <div class={`relative ${point.isMain ? 'w-3 h-3' : 'w-1 h-1'} z-50`}>
                                 <div class={`absolute w-full h-full rounded-full ${
                                     point.isMain ? 'bg-blue-500 animate-pulse' : 
                                     point.label === "" ? 'bg-transparent' : 'bg-black'
@@ -132,24 +144,30 @@
     }
 
     .circle-1 {
-        width: 85%;
-        height: 85%;
+        width: 88%;
+        height: 88%;
         right: 3%;
         top: 1%;
     }
 
     .circle-2 {
-        width: 65%;
-        height: 65%;
+        width: 70%;
+        height: 70%;
         right: 7%;
         top: 3%;
     }
 
     .circle-3 {
-        width: 40%;
-        height: 40%;
-        top: 7%;
-        right: 10%;
+        width: 50%;
+        height: 50%;
+        top: 6%;
+        right: 9%;
+    }
+    .circle-4 {
+        width: 25%;
+        height: 25%;
+        top: 9%;
+        right: 14%;
     }
 
     .animate-pulse {

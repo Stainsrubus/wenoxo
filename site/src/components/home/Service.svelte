@@ -7,10 +7,10 @@
 	import Chart from '../shared/Chart.svelte';
 </script>
 
-<main class="mt-10 px-5 md:px-10 lg:px-20">
+<main class="mt-16 md:mt-24 lg:mt-32 px-5 md:px-10 lg:px-20">
 	<div class="flex flex-col md:flex-row md:items-end md:justify-between pb-10">
 		<h1 class="text-left font-sans text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">
-			We Strive to Innovate
+			The Way We Work
 		</h1>
 
 		<!-- Button with hover effect -->
@@ -37,28 +37,27 @@
 	<section class="">
 		<div class="">
 			<p class="text-xl md:text-2xl lg:text-3xl font-light text-neutral-400">
-				<span class="text-black">Solid Strategy</span> aligned with business needs and robust data analysis
-				are fundamental ingredients to extract actionable insights
+				<span class="text-black">We focus</span> on delivering high-quality, tailored solutions that align with your business goals and vision.
 			</p>
 
-			<div class="flex flex-col lg:flex-row">
-				<div class="mt-10 md:mt-20 w-full  lg:w-1/2">
+			<div class="flex flex-col lg:flex-row items-center">
+				<div class="mt-10 md:mt-20 w-full lg:w-1/2">
 					<p class="text-lg md:text-xl lg:text-2xl font-semibold text-neutral-400">Some Numbers About Us</p>
-					<div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 mt-5 md:mt-10">
+					<div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 mt-5 md:mt-10 mx-auto max-w-[800px]">
 						{#each [
-							{ number: "+300", text: "We have successfully completed a total of 300+ projects", video: volchek },
-							{ number: "100K", text: "We’ve gathered dozens of reviews from the clients and + 100k reviews from their users", video: spring },
-							{ number: "+10", text: "Years of experience", video: clock },
-							{ number: "+280", text: "Team members all over the world", video: ball }
+							{ number: "Discover", text: "Understanding goals through research, analysis, and identifying user-driven needs.", video: volchek },
+							{ number: "Design", text: "Crafting intuitive interfaces with focus on experience, usability, and clarity.", video: spring },
+							{ number: "Build", text: "Develop scalable, high-performance solutions using modern, secure development technologies.", video: clock },
+							{ number: "Launch", text: "Deploying optimized solutions with testing, support, and performance monitoring strategies.", video: ball }
 						] as item}
-							<div class="rounded-[50px] relative max-h-[250px] max-w-[400px] bg-[#f2f0f0] p-10 pb-20 overflow-hidden">
+							<div class="rounded-[50px] relative max-h-[250px] max-w-[400px] w-full bg-[#f2f0f0] p-10 pb-20 overflow-hidden mx-auto">
 								<!-- Higher z-index for text -->
-								<p class="text-4xl md:text-5xl lg:text-6xl font-semibold relative z-10">{item.number}</p>
-								<p class="text-neutral-500 w-2/3 text-sm md:text-base relative z-10 mt-2">{item.text}</p>
+								<p class="text-2xl md:text-3xl lg:text-4xl font-semibold relative z-10">{item.number}</p>
+								<p class="text-neutral-500 w-5/6 text-base relative z-10 mt-2">{item.text}</p>
 
 								<!-- Lower z-index for the video -->
 								<div class="absolute -bottom-8 -right-6 z-0">
-									<video class="w-40 rounded-[50px]" playsinline autoplay loop muted>
+									<video class="w-32 rounded-[50px]" playsinline autoplay loop muted>
 										<source src={item.video} type="video/mp4">
 									</video>
 								</div>
@@ -66,7 +65,7 @@
 						{/each}
 					</div>
 				</div>
-				<div class="w-full lg:w-1/2 mt-10 md:mt-20 flex justify-center items-center">
+				<div class="w-[90%]  lg:w-1/2 mt-10 md:mt-20 hidden md:flex justify-center items-center">
 					<Chart />
 				</div>
 			</div>

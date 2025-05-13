@@ -13,6 +13,7 @@
 	import Projects from '../components/home/Projects.svelte';
 	import { onMount } from 'svelte';
 	import NewHome from '../components/home/NewHome.svelte';
+	import Contact from '@/components/home/contact.svelte';
   
 	let isHomeSectionInView = true;
   
@@ -31,7 +32,7 @@
 		  threshold: 0.5 // Adjust the threshold as needed
 		});
   
-		const homeSection = document.getElementById('home-section');
+		const homeSection = document.getElementById('home');
 		if (homeSection) {
 		  observer.observe(homeSection);
 		}
@@ -54,7 +55,7 @@
   </style>
   
   <main class="relative">
-	<img src={glassmorphism} class="absolute" alt="" loading="eager">
+	<img src="/images/glassmorphism.png" class="absolute" alt="" loading="eager">
 	<!-- <img src={icons} class="absolute" alt=""> -->
 	<Cursor />
 	<div class="sticky top-0 z-50 backdrop-blur-sm ">
@@ -62,17 +63,28 @@
 		<Header />
 	  </div>
 	</div>
-	<div id="home-section" class="z-20">
+	<div id="home" class="z-20">
 	  <!-- <Home /> -->
 	  <NewHome />
 	</div>
+<div id="about">
 	<Milestones />
+</div>
 
 	<!-- <Performance /> -->
 	<!-- <Projects /> -->
-	<HowWeWork />
-	<Service />
+<div id="service">
+	
+</div>
+<HowWeWork />
+<div id="howWeWork">
 
+</div>
+<Service />
+<div id="contact">
+
+</div>
+<!-- <Contact /> -->
 	<Footer />
   </main>
   

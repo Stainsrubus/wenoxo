@@ -3,7 +3,7 @@
   import { cubicOut } from 'svelte/easing';
   import AnimatedCards from './AnimatedCards.svelte';
 
-  let text = "We prove, design, implement, and market your idea with absolute transparency and efficiency at its core";
+  let text = "Solving business challenges with innovative digital solutions that drive sustainable growth across industries.";
   let letters: { char: string; color: string }[] = [];
   let sectionElement: HTMLElement;
 
@@ -25,7 +25,7 @@
           visibilityPercentage = Math.max(0, Math.min(1, visibilityPercentage));
 
           const totalLetters = letters.length;
-          const blackLetters = Math.floor(totalLetters * (visibilityPercentage * 1.5));
+          const blackLetters = Math.floor(totalLetters * (visibilityPercentage * 2.2));
 
           letters = letters.map((letter, index) => ({
               ...letter,
@@ -69,7 +69,7 @@
   <div class="container px-4 max-w-6xl mx-auto">
       <h1 class="lg:w-3/4 mx-auto text-center font-sans text-3xl md:text-4xl lg:text-5xl !leading-normal font-bold">
           {#each letters as letter}
-              <span style="color: {letter.color}; transition: color 0.3s ease;">{letter.char}</span>
+              <span style="color: {letter.color}; transition: color 0.5s ease;">{letter.char}</span>
           {/each}
       </h1>
   </div>

@@ -5,22 +5,21 @@
   let hoverIndex = null;
 
   const steps = [
-    { id: 1, title: 'Understand', image: '/assets/home/understand.jpeg', description: 'We take time and listen carefully to your needs, goals, and vision.' },
-    { id: 2, title: 'Brainstorm', image: '/assets/home/understand.jpeg', description: 'We generate ideas and explore possibilities together.' },
-    { id: 3, title: 'Collaborate', image: '/assets/home/understand.jpeg', description: 'We work with you to refine the concepts.' },
-    { id: 4, title: 'Design', image: '/assets/home/understand.jpeg', description: 'We finalize the design with your feedback.' },
-    { id: 5, title: 'Deliver', image: '/assets/home/understand.jpeg', description: 'We ensure the final product meets your expectations.' }
+    { id: 1, title: 'Mobile Development', image: '/assets/home/webdev.png', description: 'Building scalable, high-performance apps that enhance engagement and optimize user experience' },
+    { id: 2, title: 'Website Development', image: '/assets/home/Mobile app development.png', description: 'Developing adaptive websites that optimize user interaction and ensure performance.' },
+    { id: 3, title: 'Cloud Application', image: '/assets/home/Cloud application.png', description: 'Creating secure, scalable cloud applications that streamline business operations seamlessly.' },
+    { id: 4, title: 'ERP Software & CMS Development', image: '/assets/home/ERP.png', description: 'Tailoring systems to automate processes and optimize business workflow efficiently.' },
+    { id: 5, title: 'UI/UX Design', image: '/assets/home/Design.jpg', description: 'Designing visually appealing, user-focused interfaces to ensure optimal user experience.' }
   ];
 </script>
 
-<div class="mt-16 sm:mt-20 md:mt-24 lg:mt-32 flex justify-center items-center">
+<div class="mt-16 md:mt-24 lg:mt-32 flex justify-center items-center">
   <!-- Mobile/Medium Screen Layout (hidden on lg and above) -->
   <div class="lg:hidden w-full sm:w-11/12 md:w-5/6 bg-gray-50 rounded-3xl p-6 sm:p-8 md:p-12">
     <div class="flex flex-col gap-4 sm:gap-5">
-      <h2 class="text-3xl sm:text-4xl md:text-5xl font-medium text-gray-900">How We Work?</h2>
+      <h2 class="font-sans text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">Our Services</h2>
       <p class="w-full sm:w-3/4 md:w-1/2 text-base sm:text-lg font-light text-gray-500 leading-relaxed">
-        We make it simple and effective. We understand your needs, brainstorm ideas, collaborate with you to refine concepts, and deliver finalized designs.
-      </p>
+        Focused on delivering innovative digital solutions that streamline operations, enhance user experience, and drive measurable business growth.
     </div>
 
     <div class="mt-8 sm:mt-12 md:mt-16">
@@ -58,27 +57,27 @@
   </div>
 
   <!-- Large Screen Layout (hidden below lg) -->
-  <div class="hidden lg:block w-5/6 bg-gray-50 rounded-3xl p-20">
-    <div class="flex flex-col gap-5">
-      <h2 class="text-5xl font-medium text-gray-900">How We Work?</h2>
+  <div class="hidden lg:block w-full mx-5 md:mx-10 lg:mx-20 bg-gray-50 rounded-3xl py-12">
+    <div class="flex flex-col gap-5 px-12">
+      <h2 class="text-5xl font-medium text-gray-900">Our Services</h2>
       <p class="lg:w-2/3 md:w-3/4 w-5/6 text-lg font-light text-gray-500 leading-loose">
-        We make it simple and effective. We understand your needs, brainstorm ideas, collaborate with you to refine concepts, and deliver finalized designs.
+        Focused on delivering innovative digital solutions that streamline operations, enhance user experience, and drive measurable business growth.
       </p>
     </div>
 
-    <div class="lg:mt-20">
-      <table class="w-full border-collapse">
-        <tbody>
+    <div class="lg:mt-12 ">
+      <table class="w-full border-collapse ">
+        <tbody class="">
           {#each steps as step, index}
             <tr
               role="button"
               tabindex="0"
-              class="group transition-all duration-300 relative"
+              class="group group-hover:ml-20 transition-all duration-300 relative"
               on:mouseenter={() => hoverIndex = index}
               on:mouseleave={() => hoverIndex = null}
               aria-label={`Step ${step.id}: ${step.title}`}
             >
-              <td class="p-12 text-lg font-light text-gray-600">
+              <td class="step p-12 text-lg font-light text-gray-600">
                 {step.id < 10 ? `0${step.id}` : step.id}/
               </td>
               <td class="relative">
@@ -104,13 +103,10 @@
 
 <style>
   .group {
-    position: relative;
+    /* position: relative; */
     transition: left 0.9s ease-in-out;
   }
 
-  .group:hover {
-    left: 20px; /* Matches original lg screen hover effect */
-  }
 
   td {
     padding: 50px;
@@ -123,8 +119,9 @@
   }
 
   @media (min-width: 1024px) {
-    .group:hover {
-      left: 20px; /* Ensure lg hover effect */
+    .group:hover{
+      transform: translateX(0.9rem);
+      transition: transform 0.3s ease-in-out;
     }
   }
 </style>

@@ -70,8 +70,15 @@ const config: Config = {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: [...fontFamily.sans]
-			},
+                sans: ['Josefin Sans', ...fontFamily.sans],
+                josefin: ['Josefin Sans', 'sans-serif'],
+                sharp: ['SharpSansnormal', 'sans-serif'],
+                'sharp-light': ['SharpSanslight', 'sans-serif'],
+                'sharp-bold': ['sharpsansbold', 'sans-serif'],
+                'sharp-medium': ['sharpSansmedium', 'sans-serif'],
+                'sharp-semibold': ['sharpSanssemibold', 'sans-serif'],
+                fontspring: ['fontspring', 'sans-serif']
+            },
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },

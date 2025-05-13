@@ -17,6 +17,7 @@ const config = {
         alias: {
             "@/*": "./src",
         },
+        
     }
 };
 

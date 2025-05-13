@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { ArrowRight } from 'lucide-svelte';
     import { onMount } from 'svelte';
 
     let scrollContainer: HTMLElement;
-    let imageContainer: HTMLElement;
+    let rightSection: HTMLElement;
 
     // Image sources for the carousel
     const imageSources = [
-        '/pictures/p-1.jpg',
-        '/pictures/p-2.jpg',
-        '/pictures/p-3.jpg',
-        '/pictures/p-4.jpg',
-        '/pictures/p-6.jpg'
+        '/pictures/d1.png',
+        '/pictures/d2.png',
+        '/pictures/d3.png',
+        '/pictures/d4.png',
+        '/pictures/d5.png',
+        '/pictures/d6.png'
     ];
 
     // Text items for the text carousel
@@ -24,13 +27,12 @@
     ];
 
     onMount(() => {
+        // Only apply scaling logic for desktop (lg and above)
         const isMobile = window.innerWidth < 1024; // Matches lg breakpoint
-
-        // Desktop: Image scaling logic
         if (!isMobile) {
             const updateImageScale = () => {
                 const images = document.querySelectorAll('.right-images img');
-                const viewportTop = scrollContainer.scrollTop;
+                const viewportTop = rightSection.scrollTop;
                 const viewportBottom = viewportTop + window.innerHeight;
                 const viewportCenter = viewportTop + window.innerHeight / 2;
 
@@ -39,7 +41,7 @@
 
                 images.forEach((img: HTMLImageElement) => {
                     const rect = img.getBoundingClientRect();
-                    const imgTop = rect.top + scrollContainer.scrollTop;
+                    const imgTop = rect.top + rightSection.scrollTop;
                     const imgBottom = imgTop + rect.height;
                     const imgCenter = imgTop + rect.height / 2;
 
@@ -65,85 +67,70 @@
                 });
             };
 
-            scrollContainer.addEventListener('scroll', updateImageScale);
+            rightSection.addEventListener('scroll', updateImageScale);
             updateImageScale();
 
-            // Handle wheel events on .right-images
-            const handleImageWheel = (event: WheelEvent) => {
+            // Scroll handling to prioritize right section
+            const handleWheel = (event: WheelEvent) => {
                 const { deltaY } = event;
-                const scrollTop = imageContainer.scrollTop;
-                const scrollHeight = imageContainer.scrollHeight;
-                const clientHeight = imageContainer.clientHeight;
+                const rightScrollTop = rightSection.scrollTop;
+                const rightScrollHeight = rightSection.scrollHeight;
+                const rightClientHeight = rightSection.clientHeight;
+
+                const atRightTop = rightScrollTop === 0 && deltaY < 0;
+                const atRightBottom = rightScrollTop + rightClientHeight >= rightScrollHeight - 1 && deltaY > 0;
+
+                if (!atRightTop && !atRightBottom) {
+                    // Scroll within right section
+                    event.preventDefault();
+                    rightSection.scrollTop += deltaY;
+                } else {
+                    // Allow container scroll only at boundaries
+                    const containerScrollTop = scrollContainer.scrollTop;
+                    const containerScrollHeight = scrollContainer.scrollHeight;
+                    const containerClientHeight = scrollContainer.clientHeight;
+
+                    const atContainerTop = containerScrollTop === 0 && deltaY < 0;
+                    const atContainerBottom = containerScrollTop + containerClientHeight >= containerScrollHeight - 1 && deltaY > 0;
+
+                    if (!atContainerTop && !atContainerBottom) {
+                        event.preventDefault();
+                        scrollContainer.scrollTop += deltaY;
+                    }
+                }
+            };
+
+            scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+
+            return () => {
+                rightSection.removeEventListener('scroll', updateImageScale);
+                scrollContainer.removeEventListener('wheel', handleWheel);
+            };
+        } else {
+            // Mobile scroll handling (same as original)
+            const handleWheel = (event: WheelEvent) => {
+                const { deltaY } = event;
+                const scrollTop = scrollContainer.scrollTop;
+                const scrollHeight = scrollContainer.scrollHeight;
+                const clientHeight = scrollContainer.clientHeight;
 
                 const atTop = scrollTop === 0 && deltaY < 0;
                 const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
 
                 if (atTop || atBottom) {
-                    // Allow event to bubble to scrollContainer and document
                     return;
                 } else {
                     event.preventDefault();
-                    imageContainer.scrollTop += deltaY;
+                    scrollContainer.scrollTop += deltaY;
                 }
             };
 
-            imageContainer.addEventListener('wheel', handleImageWheel, { passive: false });
+            scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
 
             return () => {
-                scrollContainer.removeEventListener('scroll', updateImageScale);
-                imageContainer.removeEventListener('wheel', handleImageWheel);
+                scrollContainer.removeEventListener('wheel', handleWheel);
             };
         }
-
-        // Mobile: Handle wheel events on .wrapper
-        const handleWrapperWheel = (event: WheelEvent) => {
-            const { deltaY } = event;
-            const scrollTop = scrollContainer.scrollTop;
-            const scrollHeight = scrollContainer.scrollHeight;
-            const clientHeight = scrollContainer.clientHeight;
-
-            const atTop = scrollTop === 0 && deltaY < 0;
-            const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
-
-            if (atTop || atBottom) {
-                // Allow event to bubble to document for page scroll
-                return;
-            } else {
-                event.preventDefault();
-                scrollContainer.scrollTop += deltaY;
-            }
-        };
-
-        // Handle wheel events on scrollContainer
-        const handleWheel = (event: WheelEvent) => {
-            const { deltaY } = event;
-            const scrollTop = scrollContainer.scrollTop;
-            const scrollHeight = scrollContainer.scrollHeight;
-            const clientHeight = scrollContainer.clientHeight;
-
-            const atTop = scrollTop === 0 && deltaY < 0;
-            const atBottom = scrollTop + clientHeight >= scrollHeight && deltaY > 0;
-
-            if (atTop || atBottom) {
-                // Allow event to bubble to document for page scroll
-                return;
-            } else {
-                event.preventDefault();
-                scrollContainer.scrollTop += deltaY;
-            }
-        };
-
-        scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
-        if (isMobile) {
-            imageContainer.addEventListener('wheel', handleWrapperWheel, { passive: false });
-        }
-
-        return () => {
-            scrollContainer.removeEventListener('wheel', handleWheel);
-            if (isMobile) {
-                imageContainer.removeEventListener('wheel', handleWrapperWheel);
-            }
-        };
     });
 </script>
 
@@ -151,30 +138,45 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </svelte:head>
 
-<div bind:this={scrollContainer} class="scroll-container lg:min-h-[100dvh] pt-10 lg:max-h-[100dvh] flex lg:overflow-y-auto">
+<div bind:this={scrollContainer} class="scroll-container lg:min-h-[100dvh] pt-10 lg:max-h-[100dvh] flex lg:overflow-y-auto snap-y snap-mandatory">
     <div class="left-section lg:w-1/2 w-full text-gray-900 lg:px-12 px-5 flex flex-col lg:justify-between">
-        <div>
-            <h1 class="xl:text-6xl lg:text-5xl text-4xl font-bold my-10 text-center lg:text-left !leading-tight">Shape Your Ideas into Boundless Digital Experiences</h1>
-            <p class="text-lg flex justify-center lg:justify-start mb-8">
-                <button class="rounded-full border px-6 hover:scale-105 transition-all duration-300 py-1 hover:bg-zinc-800 hover:text-white cursor-pointer">Explore Now</button>
-            </p>
+        <div class="flex flex-col items-center lg:items-start">
+            <h1 class="xl:text-6xl font-josefin lg:text-5xl text-4xl font-bold my-10 text-center lg:text-left !leading-tight">Shape Your Ideas into Boundless Digital Experiences</h1>
+           <p class="md:text-lg px-5 font-sharp-semibold lg:px-0 text-center lg:text-left   text-base pb-10">
+            We specialize in building dynamic, high-performing websites and mobile applications that are not only responsive but also user-friendly and strategically aligned with your business goals. We focus on creating digital platforms that enhance user engagement, streamline operations, and support your long-term business objectives.
+           </p>
+            <p
+            on:click={()=>{goto('/#howWeWork')}}
+			class="group relative flex cursor-pointer items-center gap-2 overflow-hidden rounded-full bg-indigo-200 px-6 py-2 text-lg mt-5 md:mt-0 w-fit"
+		>
+			<span
+				class="group-hover:animate-fallIn relative z-10 transition-all duration-300 group-hover:text-white"
+			>
+				Explore
+			</span>
+			<span
+				class="group-hover:animate-fallIn relative z-10 transition-all duration-300 group-hover:text-white"
+			>
+				<ArrowRight size={20} />
+			</span>
+
+			<!-- Flow effect -->
+			<span
+				class="absolute inset-0 origin-left scale-x-0 bg-black transition-transform duration-300 ease-out group-hover:scale-x-100"
+			></span>
+		</p>
         </div>
 
-        <div class="flex flex-col gap-10 pb-48">
+        <div class="flex flex-col gap-10 lg:pb-56 py-20">
             <div class="flex flex-col gap-10 lg:hidden">
                 <!-- Image carousel inside bordered wrapper -->
-                <div class="wrapper lg:hidden" bind:this={imageContainer}>
+                <div class="wrapper lg:hidden">
                     {#each imageSources as src, index}
                         <div class="img-item" style="--i: {index + 1}">
-                            <img src={src} alt={`Image ${index + 1}`} class="h-full w-full object-cover" />
+                            <img  loading="eager" src={src} alt={`Image ${index + 1}`} class="h-full w-full object-contain" />
                         </div>
                     {/each}
-                    <!-- Duplicate for seamless looping -->
-                    {#each imageSources as src, index}
-                        <div class="img-item" style="--i: {index + imageSources.length + 1}">
-                            <img src={src} alt={`Image ${index + 1}`} class="h-full w-full object-cover" />
-                        </div>
-                    {/each}
+            
                 </div>
             </div>
 
@@ -182,166 +184,202 @@
             <div class="text-wrapper">
                 {#each textItems as text, index}
                     <div class="text-item" style="--i: {index + 1}">
-                        <p class="md:text-3xl text-xl font-semibold">{text}</p>
+                        <p class="md:text-3xl font-josefin text-xl">{text}</p>
                     </div>
                 {/each}
-                <!-- Duplicate for seamless looping -->
                 {#each textItems as text, index}
-                    <div class="text-item" style="--i: {index + textItems.length + 1}">
-                        <p class="md:text-3xl text-xl font-semibold">{text}</p>
-                    </div>
-                {/each}
+                <div class="text-item" style="--i: {index + 1}">
+                    <p class="md:text-3xl font-josefin text-xl">{text}</p>
+                </div>
+            {/each}
+            {#each textItems as text, index}
+            <div class="text-item" style="--i: {index + 1}">
+                <p class="md:text-3xl font-josefin text-xl">{text}</p>
+            </div>
+        {/each}
             </div>
         </div>
     </div>
 
-    <div class="right-section w-1/2 hidden lg:block">
-        <div class="right-images flex flex-col gap-5 items-center p-5" bind:this={imageContainer}>
-            <img src="/pictures/p-1.jpg" alt="Image 1" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
-            <img src="/pictures/p-2.jpg" alt="Image 2" class="w-full max-h-[450px] object-contain mb-5 rounded-lg">
-            <img src="/pictures/p-3.jpg" alt="Image 3" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
-            <img src="/pictures/p-4.jpg" alt="Image 4" class="w-full max-h-[450px] object-contain mb-5 rounded-lg">
-            <img src="/pictures/p-1.jpg" alt="Image 5" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
-            <img src="/pictures/p-2.jpg" alt="Image 6" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
+    <div bind:this={rightSection} class="right-section w-1/2 hidden lg:block lg:overflow-y-auto relative">
+        <div class="image-background absolute inset-0 -z-10"></div>
+        <div class="right-images flex flex-col gap-5 items-center p-5">
+            <img src="/pictures/d1.png" alt="Image 1" class="w-full max-h-[450px] object-contain mb-5 rounded-lg">
+            <img src="/pictures/d2.png" alt="Image 2" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
+            <img src="/pictures/d3.png" alt="Image 3" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
+            <img src="/pictures/d4.png" alt="Image 4" class="w-full max-h-[450px] object-contain mb-5 rounded-lg">
+            <img src="/pictures/d5.png" alt="Image 5" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
+            <img src="/pictures/d6.png" alt="Image 6" class="w-full max-h-[550px] object-contain mb-5 rounded-lg">
+        </div>
+        <div class="py-16">
+
         </div>
     </div>
+
+    <div id="end"></div>
 </div>
 
 <style>
-    :root {
-        --duration: 8s; /* Duration for image animation */
-        --totalitems: 5; /* Number of unique image items */
-        --text-duration: 8s; /* Duration for text animation */
-        --totaltextitems: 6; /* Number of unique text items */
-        --image-width: 250px; /* Fixed width for images */
+  :root {
+    --duration: 10s; /* Duration for image animation */
+    --totalitems: 5; /* Number of unique image items */
+    --text-duration: 8s; /* Duration for text animation */
+    --totaltextitems: 6; /* Number of unique text items */
+    --image-width: 250px; /* Fixed width for images */
+}
+
+.wrapper {
+    position: relative;
+    display: flex;
+    height: 10vw; /* Fixed height */
+    width: 50vw; /* Fixed width */
+    overflow: hidden;
+    margin: 0 auto; /* Center the wrapper */
+}
+
+.img-item {
+    position: absolute;
+    height: inherit;
+    width: var(--image-width); /* Fixed width */
+    left: 100%; /* Start off-screen to the right */
+    animation: scrollX var(--duration) linear infinite;
+    animation-delay: calc(var(--duration) / var(--totalitems) * var(--i));
+}
+
+@keyframes scrollX {
+    to {
+        left: calc(-100% - var(--image-width)); /* Move to off-screen left */
+    }
+}
+
+.img-item img {
+    height: 100%;
+    left: 0;
+    width: 100%; /* Fill the fixed width */
+    object-fit: cover; /* Ensure image fills the area */
+}
+
+.text-wrapper {
+    position: relative;
+    display: flex;
+    height: 3rem; /* Fixed height for text */
+    width: 50vw; /* Match wrapper width */
+    overflow: hidden;
+    margin: 0 auto; /* Center the text wrapper */
+}
+
+.text-item {
+    position: absolute;
+    height: inherit;
+    width: 200px; /* Fixed width for text items */
+    left: calc(-1 * 200px * var(--totaltextitems)); /* Start off-screen to the left */
+    display: flex;
+    align-items: center;
+    animation: scrollText var(--text-duration) linear infinite;
+    animation-delay: calc(var(--text-duration) / var(--totaltextitems) * var(--i));
+}
+
+@keyframes scrollText {
+    to {
+        left: 100%; /* Move to off-screen right */
+    }
+}
+
+.scroll-container {
+    scroll-snap-type: y mandatory;
+}
+
+.left-section {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    flex-shrink: 0;
+}
+
+.right-section {
+    flex-grow: 1;
+}
+
+.right-images img {
+    transform-origin: center;
+}
+
+.image-background {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 1023px) {
+    .scroll-container {
+        min-height: auto;
+        max-height: none;
+        overflow-y: auto;
+        flex-direction: column;
+    }
+
+    .left-section {
+        position: relative;
+        height: auto;
+        width: 100%;
+    }
+
+    .right-section {
+        display: none;
     }
 
     .wrapper {
-        position: relative;
-        display: flex;
-        height: 10vw; /* Fixed height */
-        width: 50vw; /* Fixed width */
+        width: 100vw;
+        height: 150px;
         overflow: hidden;
-        margin: 0 auto; /* Center the wrapper */
+        position: relative;
     }
 
     .img-item {
+        width: var(--image-width);
+        height: 100%;
         position: absolute;
-        height: inherit;
-        width: var(--image-width); /* Fixed width */
-        left: calc(-1 * var(--image-width) * var(--totalitems)); /* Start off-screen to the left */
-        animation: scrollX var(--duration) linear infinite;
-        animation-delay: calc(var(--duration) / var(--totalitems) * var(--i));
+
+        will-change: transform; /* Optimize for animation */
+    }
+
+    .img-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Ensure images maintain aspect ratio */
+        display: block;
     }
 
     @keyframes scrollX {
         to {
-            left: 100%; /* Move to off-screen right */
+            left: calc(-100% - var(--image-width)); /* Move to off-screen left */
         }
     }
 
-    .img-item img {
-        height: 100%;
-        width: 100%; /* Fill the fixed width */
-        object-fit: cover; /* Ensure image fills the area */
-    }
-
     .text-wrapper {
-        position: relative;
-        display: flex;
-        height: 3rem; /* Fixed height for text */
-        width: 50vw; /* Match wrapper width */
-        overflow: hidden;
-        margin: 0 auto; /* Center the text wrapper */
+        width: 90vw; /* Wider on mobile */
+        height: 2.5rem; /* Slightly smaller for mobile */
     }
 
     .text-item {
-        position: absolute;
-        height: inherit;
-        width: 200px; /* Fixed width for text items */
-        left: 100%; /* Start off-screen to the right */
-        display: flex;
-        align-items: center;
-        animation: scrollText var(--text-duration) linear infinite;
-        animation-delay: calc(var(--text-duration) / var(--totaltextitems) * (var(--totaltextitems) - var(--i)));
+        left: calc(-1 * 200px * var(--totaltextitems)); /* Start off-screen to the left */
     }
 
     @keyframes scrollText {
         to {
-            left: calc(-80px * var(--totaltextitems)); /* Move left by total width of text items */
+            left: 100%; /* Move to off-screen right */
         }
     }
+}
 
-    .scroll-container {
-        scroll-snap-align: start;
+@media (min-width: 768px) and (max-width: 1023px) {
+    .wrapper {
+        width: 80vw; /* Slightly narrower for medium screens */
+        height: 120px; /* Adjusted height for medium screens */
     }
 
-    .left-section {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        flex-shrink: 0;
+    .text-wrapper {
+        width: 80vw; /* Match wrapper width */
     }
+}
 
-    .right-section {
-        flex-grow: 1;
-    }
-
-    .right-images {
-        overflow: visible; /* Ensure no unintended scroll trapping */
-    }
-
-    .right-images img {
-        transform-origin: center;
-    }
-
-    @media (max-width: 1023px) {
-        .scroll-container {
-            min-height: auto;
-            max-height: none;
-            overflow-y: visible; /* Allow page scroll */
-            flex-direction: column;
-        }
-
-        .left-section {
-            position: relative;
-            height: auto;
-            width: 100%;
-        }
-
-        .right-section {
-            display: none;
-        }
-
-        .wrapper {
-            width: 100vw; /* Full width on mobile */
-            height: 150px; /* Fixed height for mobile */
-        }
-
-        .img-item {
-            width: var(--image-width); /* Maintain fixed width */
-        }
-
-        @keyframes scrollX {
-            to {
-                left: 100%; 
-            }
-        }
-
-        .text-wrapper {
-            width: 90vw; /* Wider on mobile */
-            height: 2.5rem; /* Slightly smaller for mobile */
-        }
-    }
-
-    @media (min-width: 768px) and (max-width: 1023px) {
-        .wrapper {
-            width: 80vw; /* Slightly narrower for medium screens */
-            height: 120px; /* Adjusted height for medium screens */
-        }
-
-        .text-wrapper {
-            width: 80vw; /* Match wrapper width */
-        }
-    }
 </style>

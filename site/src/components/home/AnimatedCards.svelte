@@ -1,64 +1,59 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	interface CardState {
-		progress: number; // 0 to 1, based on scroll position
-		visible: boolean;
+		progress: number; // -1 to 1, based on scroll position
 	}
 
-	let cardStates = $state<CardState[]>(Array(4).fill({ progress: 0, visible: false }));
+	let cardStates = $state<CardState[]>(Array(4).fill({ progress: 0 }));
 	let rafId: number | null = null;
+	let lastScrollY = 0;
 
 	onMount(() => {
+		if (!browser) return; // Skip during SSR
+
 		const cards = document.querySelectorAll('.card');
-		let windowHeight = window.innerHeight;
-		
-		// Calculate trigger points relative to viewport
+		let windowHeight = window.innerHeight || 600; // Fallback for SSR
+		let windowWidth = window.innerWidth || 1024; // Fallback for SSR
+
 		const updateCardStates = () => {
-			// Use more appropriate margins based on screen size
-			const margin = window.innerWidth < 768 ? windowHeight * 0.15 : windowHeight * 0.3;
-			
-			// The point where card starts transitioning in (further down)
-			const startPoint = windowHeight + margin;
-			// The point where card is fully visible (higher up)
-			const endPoint = windowHeight * 0.2;
-			// Total range for the animation
+			const scrollY = window.scrollY;
+			if (Math.abs(scrollY - lastScrollY) < 5) {
+				rafId = null;
+				return;
+			}
+			lastScrollY = scrollY;
+
+			const isMobile = windowWidth < 768;
+			const margin = isMobile ? windowHeight * 0.15 : windowHeight * 0.3;
+			const startPoint = windowHeight * 0.8 + margin; // Start earlier
+			const endPoint = windowHeight * 0.1; // Fully visible near top
 			const animationRange = startPoint - endPoint;
 
-			cardStates = Array.from(cards).map((card, index) => {
+			cardStates = Array.from(cards).map((card) => {
 				const rect = card.getBoundingClientRect();
 				const cardTop = rect.top;
-				
-				// Calculate progress: 0 when card just enters viewport, 1 when it's at target position
-				// Ensure smooth transition through the entire range
-				let progress = 1 - ((cardTop - endPoint) *2/ animationRange);
-				
-				// Make sure progress stays in 0-1 range
-				progress = Math.max(0, Math.min(1, progress));
-				
-				// Apply slight adjustment to make initial movement more noticeable
-				if (progress > 0 && progress < 0.2) {
-					progress = progress * 0.7; // Slow down initial movement to make translation more visible
-				}
-				
-				// Determine if card should be visible (slightly before entering viewport)
-				const visible = cardTop < (windowHeight + 200);
-				
-				return { progress, visible };
+
+				// Progress: -1 (above viewport), 0 (at start), 1 (at end)
+				let progress = 1 - (cardTop - endPoint) / animationRange;
+				progress = Math.max(-1, Math.min(1, progress));
+
+				return { progress };
 			});
-			
+
 			rafId = null;
 		};
 
 		const handleScroll = () => {
-			// Use requestAnimationFrame for smoother updates
 			if (!rafId) {
 				rafId = requestAnimationFrame(updateCardStates);
 			}
 		};
 
 		const handleResize = () => {
-			windowHeight = window.innerHeight;
+			windowHeight = window.innerHeight || 600;
+			windowWidth = window.innerWidth || 1024;
 			updateCardStates();
 		};
 
@@ -75,10 +70,8 @@
 		};
 	});
 
-	// Helper function for enhanced smooth easing
 	function easeOutCubic(x: number): number {
-		// Using a more pronounced easing curve
-		return 1 - Math.pow(1 - x, 8);
+		return 1 - Math.pow(1 - x, 4); // Smoother easing
 	}
 </script>
 
@@ -89,55 +82,59 @@
 			class:even={i % 2 === 0}
 			class:odd={i % 2 !== 0}
 			data-index={i}
-			style="opacity: {state.visible ? easeOutCubic(state.progress) : 0};
-			       transform: {window.innerWidth < 768
-				? `scale(${0.9 + (easeOutCubic(state.progress) * 0.1)}) translateY(${(1 - easeOutCubic(state.progress)) * 3}rem)`
-				: i % 2 === 0
-					? `translateX(${(1 - easeOutCubic(state.progress)) * -16}rem) rotate(${(1 - easeOutCubic(state.progress)) * -8}deg) scale(${0.9 + (easeOutCubic(state.progress) * 0.1)})`
-					: `translateX(${(1 - easeOutCubic(state.progress)) * 16}rem) rotate(${(1 - easeOutCubic(state.progress)) * 8}deg) scale(${0.9 + (easeOutCubic(state.progress) * 0.1)})`};"
+			style="opacity: {easeOutCubic(Math.abs(state.progress))};
+			       transform: {browser && window.innerWidth < 768
+				? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -12 : 12) : (1 - state.progress) * (i % 2 === 0 ? -12 : 12)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
+				: `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -24 : 24) : (1 - state.progress) * (i % 2 === 0 ? -24 : 24)}rem) rotate(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -10 : 10) : (1 - state.progress) * (i % 2 === 0 ? -10 : 10)}deg) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`};"
 		>
 			<div class="card-content relative z-10">
 				<div>
 					{#if i === 0}
 						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-gray-100 border-2 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-blue-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
 						>
-							Business Driven
+						Projects Delivered
 						</p>
 					{:else if i === 1}
-						<p
+						<!-- <p
 							class="absolute w-fit -top-12 sm:-top-16 md:-top-20 -left-2 sm:-left-3 md:-left-5 text-base sm:text-lg md:text-xl flex items-center"
 						>
 							<img src="/assets/home/icons.svg" alt="Delivered" class="h-16 sm:h-20 md:h-24" />
+						</p> -->
+						<p
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-orange-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+						>
+						Years Experience
 						</p>
 					{:else if i === 2}
-						<p
-							class="absolute w-fit -top-12 sm:-top-16 md:-top-20 -left-2 sm:-left-3 md:-left-5 text-base sm:text-lg md:text-xl flex items-center"
-						>
-							<img src="/assets/home/icons.svg" alt="Delivered" class="h-16 sm:h-20 md:h-24" />
-						</p>
+					<p
+					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-pink-100"
+				>
+				Industry Expertise
+				</p>
+					
 					{:else}
-						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-gray-100"
-						>
-							Experience
-						</p>
+					<p
+					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-indigo-200  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+				>
+				Satisfied Clients
+				</p>
 					{/if}
 				</div>
 
 				<p
 					class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-8 sm:mt-10 font-bold text-gray-900"
 				>
-					{i === 0 ? '$300m' : i === 1 ? '200+' : i === 2 ? '150+' : '10+ Years'}
+					{i === 0 ? '300' : i === 1 ? '12+' : i === 2 ? '10+' : '150'}
 				</p>
 				<p class="text-base sm:text-lg md:text-xl pt-8 sm:pt-10 md:pt-12 text-gray-600">
 					{i === 0
-						? 'In funding clients raised'
+						? 'Successful projects completed'
 						: i === 1
-							? 'Completed worldwide'
+							? 'Years of hands-on experience'
 							: i === 2
-								? 'Satisfied customers'
-								: 'Software development'}
+								? 'Industries of Expertise'
+								: 'Clients across diverse industries'}
 				</p>
 			</div>
 		</div>
@@ -154,7 +151,7 @@
 		overflow: hidden;
 		position: relative;
 		backface-visibility: hidden;
-		transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+		transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 	}
 
 	.card.even {
