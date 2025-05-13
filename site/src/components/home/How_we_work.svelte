@@ -5,8 +5,8 @@
   let hoverIndex = null;
 
   const steps = [
-    { id: 1, title: 'Mobile Development', image: '/assets/home/webdev.png', description: 'Building scalable, high-performance apps that enhance engagement and optimize user experience' },
-    { id: 2, title: 'Website Development', image: '/assets/home/Mobile app development.png', description: 'Developing adaptive websites that optimize user interaction and ensure performance.' },
+    { id: 1, title: 'Mobile Development', image: '/assets/home/Mobile app development.png', description: 'Building scalable, high-performance apps that enhance engagement and optimize user experience' },
+    { id: 2, title: 'Website Development', image: '/assets/home/webdev.png', description: 'Developing adaptive websites that optimize user interaction and ensure performance.' },
     { id: 3, title: 'Cloud Application', image: '/assets/home/Cloud application.png', description: 'Creating secure, scalable cloud applications that streamline business operations seamlessly.' },
     { id: 4, title: 'ERP Software & CMS Development', image: '/assets/home/ERP.png', description: 'Tailoring systems to automate processes and optimize business workflow efficiently.' },
     { id: 5, title: 'UI/UX Design', image: '/assets/home/Design.jpg', description: 'Designing visually appealing, user-focused interfaces to ensure optimal user experience.' }
@@ -59,7 +59,7 @@
   <!-- Large Screen Layout (hidden below lg) -->
   <div class="hidden lg:block w-full mx-5 md:mx-10 lg:mx-20 bg-gray-50 rounded-3xl py-12">
     <div class="flex flex-col gap-5 px-12">
-      <h2 class="text-5xl font-medium text-gray-900">Our Services</h2>
+      <h2 class="text-5xl font-fontspring font-medium text-gray-900">Our Services</h2>
       <p class="lg:w-2/3 md:w-3/4 w-5/6 text-lg font-light text-gray-500 leading-loose">
         Focused on delivering innovative digital solutions that streamline operations, enhance user experience, and drive measurable business growth.
       </p>

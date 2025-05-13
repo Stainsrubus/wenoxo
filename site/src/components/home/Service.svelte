@@ -9,7 +9,7 @@
 
 <main class="mt-16 md:mt-24 lg:mt-32 px-5 md:px-10 lg:px-20">
 	<div class="flex flex-col md:flex-row md:items-end md:justify-between pb-10">
-		<h1 class="text-left font-sans text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">
+		<h1 class="text-left font-fontspring text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">
 			The Way We Work
 		</h1>
 

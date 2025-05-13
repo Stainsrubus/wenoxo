@@ -57,7 +57,9 @@
   <main class="relative">
 	<img src="/images/glassmorphism.png" class="absolute" alt="" loading="eager">
 	<!-- <img src={icons} class="absolute" alt=""> -->
+<div class="hidden lg:block">
 	<Cursor />
+</div>
 	<div class="sticky top-0 z-50 backdrop-blur-sm ">
 	  <div class={`header ${isHomeSectionInView ? 'lg:pt-8' : 'pt-0'} pt-0`}>
 		<Header />
@@ -84,7 +86,7 @@
 <div id="contact">
 
 </div>
-<!-- <Contact /> -->
+<Contact />
 	<Footer />
   </main>
   

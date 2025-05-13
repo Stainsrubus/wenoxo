@@ -67,7 +67,7 @@
 
 <section bind:this={sectionElement} class="flex flex-col items-center justify-center bg-white lg:pt-20">
   <div class="container px-4 max-w-6xl mx-auto">
-      <h1 class="lg:w-3/4 mx-auto text-center font-sans text-3xl md:text-4xl lg:text-5xl !leading-normal font-bold">
+      <h1 class="lg:w-3/4 mx-auto text-center font-fontspring text-3xl md:text-4xl lg:text-5xl !leading-normal font-bold">
           {#each letters as letter}
               <span style="color: {letter.color}; transition: color 0.5s ease;">{letter.char}</span>
           {/each}

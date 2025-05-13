@@ -7,11 +7,11 @@
 	  <!-- Top navigation and email -->
 	  <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:pb-4 md:mb-4 gap-6">
 		<nav class="flex flex-wrap gap-4 md:gap-6">
-		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">About</a>
-		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Why Us</a>
-		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Platform</a>
-		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Pricing</a>
-		  <a href="#" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Contacts</a>
+		  <a href="/#home" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Home</a>
+		  <a href="/#about" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">About Us</a>
+		  <a href="/#service" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">Services</a>
+		  <a href="/#howWeWork" class="text-sm md:text-base text-white/60 hover:text-white transition-colors">How we work</a>
+
 		</nav>
 		<div class="text-2xl md:text-3xl xl:text-4xl lg:text-5xl font-thin font-ct w-full md:w-auto text-left md:text-right">
 			<a 

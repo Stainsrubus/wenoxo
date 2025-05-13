@@ -26,9 +26,9 @@
 			lastScrollY = scrollY;
 
 			const isMobile = windowWidth < 768;
-			const margin = isMobile ? windowHeight * 0.15 : windowHeight * 0.3;
-			const startPoint = windowHeight * 0.8 + margin; // Start earlier
-			const endPoint = windowHeight * 0.1; // Fully visible near top
+			const margin = isMobile ? windowHeight * 0.1 : windowHeight * 0.3; // Reduced margin for mobile
+			const startPoint = isMobile ? windowHeight * 0.6 : windowHeight * 0.8; // Start earlier on mobile
+			const endPoint = isMobile ? windowHeight * 0.2 : windowHeight * 0.1; // End sooner on mobile
 			const animationRange = startPoint - endPoint;
 
 			cardStates = Array.from(cards).map((card) => {
@@ -84,41 +84,35 @@
 			data-index={i}
 			style="opacity: {easeOutCubic(Math.abs(state.progress))};
 			       transform: {browser && window.innerWidth < 768
-				? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -12 : 12) : (1 - state.progress) * (i % 2 === 0 ? -12 : 12)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
+				? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -8 : 8) : (1 - state.progress) * (i % 2 === 0 ? -8 : 8)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
 				: `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -24 : 24) : (1 - state.progress) * (i % 2 === 0 ? -24 : 24)}rem) rotate(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -10 : 10) : (1 - state.progress) * (i % 2 === 0 ? -10 : 10)}deg) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`};"
 		>
 			<div class="card-content relative z-10">
 				<div>
 					{#if i === 0}
 						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-blue-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-blue-100 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
 						>
-						Projects Delivered
+							Projects Delivered
 						</p>
 					{:else if i === 1}
-						<!-- <p
-							class="absolute w-fit -top-12 sm:-top-16 md:-top-20 -left-2 sm:-left-3 md:-left-5 text-base sm:text-lg md:text-xl flex items-center"
-						>
-							<img src="/assets/home/icons.svg" alt="Delivered" class="h-16 sm:h-20 md:h-24" />
-						</p> -->
 						<p
-							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-orange-100  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-orange-100 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
 						>
-						Years Experience
+							Years Experience
 						</p>
 					{:else if i === 2}
-					<p
-					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-pink-100"
-				>
-				Industry Expertise
-				</p>
-					
+						<p
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-pink-100"
+						>
+							Industry Expertise
+						</p>
 					{:else}
-					<p
-					class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-indigo-200  border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
-				>
-				Satisfied Clients
-				</p>
+						<p
+							class="absolute w-fit p-3 sm:p-4 -top-12 sm:-top-16 md:-top-20 -right-2 sm:-right-3 md:-right-5 text-base sm:text-lg md:text-xl rounded-full bg-indigo-200 border-gradient-to-r from-[#f8a5c2] to-[#f58b8c]"
+						>
+							Satisfied Clients
+						</p>
 					{/if}
 				</div>
 
@@ -151,7 +145,7 @@
 		overflow: hidden;
 		position: relative;
 		backface-visibility: hidden;
-		transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+		transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Faster transition on mobile */
 	}
 
 	.card.even {
