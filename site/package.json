@@ -47,6 +47,7 @@
 	"dependencies": {
 		"@emailjs/browser": "^4.4.1",
 		"@iconify/svelte": "^4.2.0",
+		"@motionone/dom": "^10.18.0",
 		"@types/node": "^20.17.46",
 		"animejs": "^3.2.2",
 		"caniuse-lite": "^1.0.30001717",

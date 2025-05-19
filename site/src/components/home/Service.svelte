@@ -7,12 +7,9 @@
 	import Chart from '../shared/Chart.svelte';
 </script>
 
-<main class="mt-16 md:mt-24 lg:mt-32 px-5 md:px-10 lg:px-20">
-	<div class="flex flex-col md:flex-row md:items-end md:justify-between pb-10">
-		<h1 class="text-left font-fontspring text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">
-			The Way We Work
-		</h1>
-
+<main class="mt-16 md:mt-24 lg:mt-32  container">
+	<div class="flex flex-col md:flex-row md:items-end md:justify-between pb-6">
+		<h2 class="text-5xl font-fontspring font-medium text-gray-900">The Way We Work</h2>
 		<!-- Button with hover effect -->
 		<p
 			class="group relative flex cursor-pointer items-center gap-2 overflow-hidden rounded-full bg-gray-100 px-6 py-2 text-lg mt-5 md:mt-0 w-fit"
@@ -35,13 +32,11 @@
 		</p>
 	</div>
 	<section class="">
-		<div class="">
-			<p class="text-xl md:text-2xl lg:text-3xl font-light text-neutral-400">
-				<span class="text-black">We focus</span> on delivering high-quality, tailored solutions that align with your business goals and vision.
-			</p>
-
+			<p class="lg:w-2/3 md:w-3/4 w-5/6 text-lg font-light text-gray-500 leading-loose">
+				We focus on delivering high-quality, tailored solutions that align with your business goals and vision.
+			  </p>
 			<div class="flex flex-col lg:flex-row items-center">
-				<div class="mt-10 md:mt-20 w-full lg:w-1/2">
+				<div class="mt-10 w-full lg:w-1/2">
 					<p class="text-lg md:text-xl lg:text-2xl font-semibold text-neutral-400">Some Numbers About Us</p>
 					<div class="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-6 mt-5 md:mt-10 mx-auto max-w-[800px]">
 						{#each [
@@ -69,8 +64,6 @@
 					<Chart />
 				</div>
 			</div>
-		</div>
-
 		<hr class="mt-10 md:mt-20" />
 	</section>
 </main>

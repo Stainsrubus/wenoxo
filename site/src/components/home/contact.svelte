@@ -2,7 +2,7 @@
 	import { writable } from 'svelte/store';
 
 	// Track focus state for each input
-	const focused = writable([false, false, false, false, false]); // [name, phone, email, message, sector]
+	const focused = writable([false, false, false, false]); // [name, phone, email, message]
 
 	// Track selected services
 	const selectedServices = writable<string[]>([]);
@@ -18,7 +18,7 @@
 	let phoneError = '';
 	let formMessage = '';
 	let formMessageType = ''; // 'success' or 'error'
-
+	const isSubmitting = writable(false);
 	// List of available services
 	const services = [
 		'Mobile App',
@@ -90,6 +90,7 @@
 			formMessageType = 'error';
 			return;
 		}
+		isSubmitting.set(true);
 
 		const payload = {
 			service_id: 'service_70nfi2e',
@@ -131,11 +132,15 @@
 			formMessage = 'An error occurred. Please try again later.';
 			formMessageType = 'error';
 		}
+		finally {
+        // Reset submitting state
+        isSubmitting.set(false);
+    }
 	}
 </script>
 
 <div class="px-4 pt-12 bg-black text-white">
-	<div class="flex flex-col md:flex-row justify-between items-center">
+	<div class="flex container flex-col md:flex-row justify-between items-center">
 		<div class="text-center w-full md:w-1/3 md:text-left mb-8 md:mb-0">
 			<h2 class="lg:text-7xl md:text-6xl text-5xl leading-normal font-bold">Shall we get started?</h2>
 		</div>
@@ -154,7 +159,7 @@
 						{#each sectors as sector}
 							<button
 								type="button"
-								class="{$selectedSectors.includes(sector) ? 'bg-gray-500 text-white' : 'bg-gray-900'} hover:bg-gray-600 text-gray-400 hover:text-white py-2 px-4 rounded-full transition-colors"
+								class="py-2 px-4 rounded-full transition-colors duration-300 {$selectedSectors.includes(sector) ? 'bg-white text-black' : 'bg-gray-600/50 text-gray-400 hover:bg-gray-500/50 hover:text-white'}"
 								on:click={() => toggleSector(sector)}
 							>
 								{sector}
@@ -170,7 +175,7 @@
 						{#each services as service}
 							<button
 								type="button"
-								class="{$selectedServices.includes(service) ? 'bg-gray-500 text-white' : 'bg-gray-900'} hover:bg-gray-600 text-gray-400 hover:text-white py-2 px-4 rounded-full transition-colors"
+								class="py-2 px-4 rounded-full transition-colors duration-300 {$selectedServices.includes(service) ? 'bg-white text-black' : 'bg-gray-600/50 text-gray-400 hover:bg-gray-500/50 hover:text-white'}"
 								on:click={() => toggleService(service)}
 							>
 								{service}
@@ -194,7 +199,7 @@
 					<!-- Name Input -->
 					<div class="mb-4 relative">
 						<input
-							class="block w-full bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer"
+							class="block w-full rounded-lg bg-transparent border border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer"
 							id="name"
 							type="text"
 							name="name"
@@ -205,16 +210,16 @@
 						/>
 						<label
 							for="name"
-							class="absolute left-0 text-gray-400 text-sm font-bold transition-all duration-200 transform peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 {$focused[0] || name ? '-top-6 text-xs text-blue-500' : 'top-2 text-base'}"
+							class="absolute left-5 bg-black text-gray-400 text-base font-bold transition-all duration-200 transform peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-base peer-focus:text-blue-500 {$focused[0] || name ? '-top-3 text-base text-blue-500' : 'top-3 text-base'}"
 						>
-							My Name
+							Enter Your Name
 						</label>
 					</div>
 
 					<!-- Phone Input -->
 					<div class="mb-4 relative">
 						<input
-							class="block w-full bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer {phoneError ? 'border-red-500' : ''}"
+							class="block w-full rounded-lg bg-transparent border border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer"
 							id="phone"
 							type="text"
 							name="phone"
@@ -226,9 +231,9 @@
 						/>
 						<label
 							for="phone"
-							class="absolute left-0 text-gray-400 text-sm font-bold transition-all duration-200 transform peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 {$focused[1] || phone ? '-top-2 text-xs text-blue-500' : 'top-4 text-base'}"
+							class="absolute left-5 bg-black text-gray-400 text-base font-bold transition-all duration-200 transform peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-base peer-focus:text-blue-500 {$focused[1] || phone ? '-top-3 text-base text-blue-500' : 'top-3 text-base'}"
 						>
-							My Mobile no.
+							Enter Mobile Number
 						</label>
 						{#if phoneError}
 							<p class="text-red-500 text-xs mt-1">{phoneError}</p>
@@ -236,9 +241,9 @@
 					</div>
 
 					<!-- Email Input -->
-					<div class="relative">
+					<div class="mb-4 relative">
 						<input
-							class="block w-full bg-transparent border-0 border-b-2 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer"
+							class="block w-full rounded-lg bg-transparent border border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-4 pb-2 peer"
 							id="email"
 							type="email"
 							name="email"
@@ -249,39 +254,42 @@
 						/>
 						<label
 							for="email"
-							class="absolute left-0 text-gray-400 text-sm font-bold transition-all duration-200 transform peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-xs peer-focus:text-blue-500 {$focused[2] || email ? '-top-2 text-xs text-blue-500' : 'top-4 text-base'}"
+							class="absolute left-5 bg-black text-gray-400 text-base font-bold transition-all duration-200 transform peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-base peer-focus:text-blue-500 {$focused[2] || email ? '-top-3 text-base text-blue-500' : 'top-3 text-base'}"
 						>
-							My Email
+							Enter Email
 						</label>
 					</div>
 
-					<!-- Message Textarea -->
-					<div class="relative">
-						<textarea
-							class="block w-full bg-transparent border-0 border-b-2 py-0 border-gray-800 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 peer"
-							id="message"
-							name="message"
-							bind:value={message}
-							on:focus={() => handleFocus(3)}
-							on:blur={() => handleBlur(3)}
-							placeholder=" "
-						></textarea>
-						<label
-							for="message"
-							class="absolute left-0 text-gray-400 text-sm font-bold transition-all duration-200 transform peer-placeholder-shown:top-4 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-xs peer-focus:text-blue-500 {$focused[3] || message ? '-top-4 text-xs text-blue-500' : 'top-6 text-base'}"
-						>
-							Tell us more...
-						</label>
-					</div>
+		<!-- Message Textarea -->
+<div class="mb-4 relative">
+    <textarea
+        class="block w-full rounded-lg bg-transparent border border-gray-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 pt-3 pb-1 peer h-[50px]"
+        id="message"
+        name="message"
+        bind:value={message}
+        on:focus={() => handleFocus(3)}
+        on:blur={() => handleBlur(3)}
+        placeholder=" "
+    ></textarea>
+    <label
+        for="message"
+        class="absolute left-5 bg-black text-gray-400 text-base font-bold transition-all duration-200 transform peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-focus:-top-3 peer-focus:text-base peer-focus:text-blue-500 {$focused[3] || message ? '-top-3 text-base text-blue-500' : 'top-3 text-base'}"
+    >
+        Tell us more...
+    </label>
+</div>
+
 				</div>
 				<div class="flex items-center justify-between">
 					<button
 						class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 						type="submit"
+						disabled={$isSubmitting}
 					>
-						Send
+						{$isSubmitting ? 'Sending...' : 'Send'}
 					</button>
 				</div>
+				
 			</form>
 		</div>
 	</div>

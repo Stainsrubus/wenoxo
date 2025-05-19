@@ -12,12 +12,11 @@
     { id: 5, title: 'UI/UX Design', image: '/assets/home/Design.jpg', description: 'Designing visually appealing, user-focused interfaces to ensure optimal user experience.' }
   ];
 </script>
-
-<div class="mt-16 md:mt-24 lg:mt-32 flex justify-center items-center">
+<div class="mt-16 container  md:mt-24 lg:mt-32 flex justify-center items-center ">
   <!-- Mobile/Medium Screen Layout (hidden on lg and above) -->
-  <div class="lg:hidden w-full sm:w-11/12 md:w-5/6 bg-gray-50 rounded-3xl p-6 sm:p-8 md:p-12">
+  <div class="lg:hidden w-full p-5 bg-gray-50 rounded-3xl ">
     <div class="flex flex-col gap-4 sm:gap-5">
-      <h2 class="font-sans text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">Our Services</h2>
+      <h2 class=" text-4xl md:text-5xl lg:text-6xl font-semibold text-[#3F3F3F]">Our Services</h2>
       <p class="w-full sm:w-3/4 md:w-1/2 text-base sm:text-lg font-light text-gray-500 leading-relaxed">
         Focused on delivering innovative digital solutions that streamline operations, enhance user experience, and drive measurable business growth.
     </div>
@@ -57,7 +56,7 @@
   </div>
 
   <!-- Large Screen Layout (hidden below lg) -->
-  <div class="hidden lg:block w-full mx-5 md:mx-10 lg:mx-20 bg-gray-50 rounded-3xl py-12">
+  <div class="hidden lg:block w-full  bg-gray-50 rounded-3xl py-12">
     <div class="flex flex-col gap-5 px-12">
       <h2 class="text-5xl font-fontspring font-medium text-gray-900">Our Services</h2>
       <p class="lg:w-2/3 md:w-3/4 w-5/6 text-lg font-light text-gray-500 leading-loose">
@@ -99,8 +98,9 @@
       </table>
     </div>
   </div>
-</div>
 
+
+</div>
 <style>
   .group {
     /* position: relative; */

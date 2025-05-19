@@ -8,7 +8,6 @@
 
 	let cardStates = $state<CardState[]>(Array(4).fill({ progress: 0 }));
 	let rafId: number | null = null;
-	let lastScrollY = 0;
 
 	onMount(() => {
 		if (!browser) return; // Skip during SSR
@@ -19,23 +18,17 @@
 
 		const updateCardStates = () => {
 			const scrollY = window.scrollY;
-			if (Math.abs(scrollY - lastScrollY) < 5) {
-				rafId = null;
-				return;
-			}
-			lastScrollY = scrollY;
-
 			const isMobile = windowWidth < 768;
-			const margin = isMobile ? windowHeight * 0.1 : windowHeight * 0.3; // Reduced margin for mobile
-			const startPoint = isMobile ? windowHeight * 0.6 : windowHeight * 0.8; // Start earlier on mobile
-			const endPoint = isMobile ? windowHeight * 0.2 : windowHeight * 0.1; // End sooner on mobile
+			const margin = isMobile ? windowHeight * 0.15 : windowHeight * 0.3; // Slightly increased margin for mobile
+			const startPoint = isMobile ? windowHeight * 0.8 : windowHeight * 0.8; // Consistent start point
+			const endPoint = isMobile ? windowHeight * 0.1 : windowHeight * 0.1; // Consistent end point
 			const animationRange = startPoint - endPoint;
 
 			cardStates = Array.from(cards).map((card) => {
 				const rect = card.getBoundingClientRect();
 				const cardTop = rect.top;
 
-				// Progress: -1 (above viewport), 0 (at start), 1 (at end)
+				// Progress: -1 (above viewport), 0 (center), 1 (below viewport)
 				let progress = 1 - (cardTop - endPoint) / animationRange;
 				progress = Math.max(-1, Math.min(1, progress));
 
@@ -75,7 +68,7 @@
 	}
 </script>
 
-<section class="grid grid-cols-1 lg:grid-cols-2 mt-10 px-4 sm:px-6 md:px-8 lg:px-16 lg:gap-x-6 gap-y-6 md:gap-y-8 lg:gap-y-10 lg:w-5/6 md:w-3/4 w-5/6 mx-auto">
+<section class="grid grid-cols-1 lg:grid-cols-2 mt-10 px-4 sm:px-6 md:px-8 lg:px-16 lg:gap-x-6 gap-y-8 md:gap-y-10 lg:gap-y-12 lg:w-5/6 md:w-3/4 w-5/6 mx-auto">
 	{#each cardStates as state, i}
 		<div
 			class="card w-full p-6 sm:p-8 md:p-12 lg:p-14 py-12 sm:py-16 md:py-20 lg:py-24 relative rounded-3xl shadow-lg bg-white will-change-transform"
@@ -84,8 +77,8 @@
 			data-index={i}
 			style="opacity: {easeOutCubic(Math.abs(state.progress))};
 			       transform: {browser && window.innerWidth < 768
-				? `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -8 : 8) : (1 - state.progress) * (i % 2 === 0 ? -8 : 8)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`
-				: `translateX(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -24 : 24) : (1 - state.progress) * (i % 2 === 0 ? -24 : 24)}rem) rotate(${state.progress < 0 ? (1 + state.progress) * (i % 2 === 0 ? -10 : 10) : (1 - state.progress) * (i % 2 === 0 ? -10 : 10)}deg) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1})`};"
+				? `translateX(${(1 - Math.abs(state.progress)) * (i % 2 === 0 ? -10 : 10)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1}) rotate(${(1 - Math.abs(state.progress)) * (i % 2 === 0 ? -5 : 5)}deg)`
+				: `translateX(${(1 - Math.abs(state.progress)) * (i % 2 === 0 ? -24 : 24)}rem) scale(${0.9 + easeOutCubic(Math.abs(state.progress)) * 0.1}) rotate(${(1 - Math.abs(state.progress)) * (i % 2 === 0 ? -10 : 10)}deg)`};"
 		>
 			<div class="card-content relative z-10">
 				<div>
@@ -145,7 +138,7 @@
 		overflow: hidden;
 		position: relative;
 		backface-visibility: hidden;
-		transition: opacity 0.2s ease-out, transform 0.2s ease-out; /* Faster transition on mobile */
+		transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Slightly slower for smoother effect */
 	}
 
 	.card.even {
@@ -186,8 +179,8 @@
 	@media (max-width: 767px) {
 		.card.even,
 		.card.odd {
-			margin-top: 0;
-			margin-bottom: 0;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
 		}
 	}
 </style>

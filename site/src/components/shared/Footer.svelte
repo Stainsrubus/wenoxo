@@ -3,7 +3,7 @@
   </script>
   
   <footer class="bg-black text-white pt-10 md:pt-24 lg:pt-32 pb-8 lg:pb-10">
-	<div class="w-[95%] md:w-[90%] mx-auto px-2 md:px-4">
+	<div class="w-[95%] md:w-[90%] mx-auto px-2 md:px-4 container ">
 	  <!-- Top navigation and email -->
 	  <div class="flex flex-col md:flex-row justify-between items-start md:items-center md:pb-4 md:mb-4 gap-6">
 		<nav class="flex flex-wrap gap-4 md:gap-6">
