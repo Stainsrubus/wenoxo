@@ -92,28 +92,28 @@
 <article class="home-section relative" bind:this={homeSection}>
     <img
         src="/images/glassmorphism.png"
-        class="glassmorphism-bg fixed transition-all duration-900 w-full h-screen object-cover -z-10"
+        class="glassmorphism-bg fixed transition-all duration-900 lg:w-full h-screen object-cover -z-10"
         alt=""
         loading="lazy"
     >
 
     <div class="flex container">
-        <section class="!sticky  top-0 lg:h-screen h-full py-20 lg:py-0 flex flex-col items-center justify-center lg:w-[60%] w-full z-10">
+        <section class="!sticky top-0 md:py-20 py-0 lg:py-0 lg:h-screen h-full  flex flex-col items-center justify-center lg:w-[60%] w-full z-10">
             <div class="flex flex-col items-center lg:items-start">
-                <h1 class="xl:text-6xl font-sharp-bold lg:text-5xl text-4xl font-bold my-10 text-center lg:text-left !leading-tight">
+                <h1 class="xl:text-6xl font-sharp-bold lg:text-5xl text-3xl font-bold my-10 text-center lg:text-left !leading-tight">
                     Shape Your Ideas into Boundless Digital Experiences
                 </h1>
-                <p class="md:text-lg w-[90%] px-5 font-sharp-semibold lg:px-0 text-center lg:text-left text-base pb-10">
+                <p class="md:text-lg lg:w-[90%] w-full px-5 font-sharp-semibold lg:px-0 text-center lg:text-left text-sm pb-10">
                     We specialize in building dynamic, high-performing websites and mobile applications that are not only responsive but also user-friendly and strategically aligned with your business goals. We focus on creating digital platforms that enhance user engagement, streamline operations, and support your long-term business objectives.
                 </p>
-                <div class="flex gap-10 pb-10">
-                    <p class="text-[#2B3029] flex gap-2 items-center text-xl font-medium">
+                <div class="flex gap-4 md:gap-10 pb-10">
+                    <p class="text-[#2B3029] flex md:gap-2 items-center md:text-xl text-base font-medium">
                         <span class="text-[#276F00]">
                             <Icon icon="material-symbols:check-circle-rounded" width="24" height="24" />
                         </span>
                         On Time Delivery
                     </p>
-                    <p class="text-[#2B3029] flex gap-2 items-center text-xl font-medium">
+                    <p class="text-[#2B3029] flex md:gap-2 items-center md:text-xl text-base  font-medium">
                         <span class="text-[#276F00]">
                             <Icon icon="material-symbols:check-circle-rounded" width="24" height="24" />
                         </span>
@@ -124,30 +124,63 @@
                     Explore
                 </button>
             </div>
-                <div class="flex flex-col gap-10 py-5 lg:hidden">
-                    <!-- Image carousel inside bordered wrapper -->
-                    <div class="wrapper lg:hidden">
-                        {#each imageSources as src, index}
-                            <div class="img-item" style="--i: {index + 1}">
-                                <img  loading="eager" src={src} alt={`Image ${index + 1}`} class="h-full w-full object-contain" />
+                      <!-- Text carousel with CSS animation -->
+                      <div class="text-carousel-container lg:block hidden">
+                        <div class="text-carousel">
+                            {#each textItems as text, index}
+                                <div class="text-item">
+                                    <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
+                                </div>
+                            {/each}
+                            {#each textItems as text, index}
+                            <div class="text-item">
+                                <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
                             </div>
                         {/each}
-                
+    
+                            <!-- Duplicate items for seamless looping -->
+                            {#each textItems as text, index}
+                                <div class="text-item">
+                                    <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
+                                </div>
+                            {/each}
+                        </div>
                     </div>
-            <!-- Text carousel with CSS animation -->
-            <div class="text-carousel-container">
-                <div class="text-carousel">
-                    {#each textItems as text, index}
+            <div class="flex flex-col gap-10 py-5 lg:hidden">
+                <!-- Image carousel inside bordered wrapper -->
+                <div class="wrapper lg:hidden">
+                    {#each imageSources as src, index}
+                        <div class="img-item" style="--i: {index + 1}">
+                            <img  loading="eager" src={src} alt={`Image ${index + 1}`} class="h-full w-full object-contain" />
+                        </div>
+                    {/each}
+                    {#each imageSources as src, index}
+                    <div class="img-item" style="--i: {index + 1}">
+                        <img  loading="eager" src={src} alt={`Image ${index + 1}`} class="h-full w-full object-contain" />
+                    </div>
+                {/each}
+                </div>
+                <!-- Text carousel with CSS animation -->
+                <div class="text-carousel-container">
+                    <div class="text-carousel">
+                        {#each textItems as text, index}
+                            <div class="text-item">
+                                <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
+                            </div>
+                        {/each}
+                        {#each textItems as text, index}
                         <div class="text-item">
                             <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
                         </div>
                     {/each}
-                    <!-- Duplicate items for seamless looping -->
-                    {#each textItems as text, index}
-                        <div class="text-item">
-                            <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
-                        </div>
-                    {/each}
+
+                        <!-- Duplicate items for seamless looping -->
+                        {#each textItems as text, index}
+                            <div class="text-item">
+                                <p class="md:text-3xl text-[#949494] font-josefin text-2xl">{text}</p>
+                            </div>
+                        {/each}
+                    </div>
                 </div>
             </div>
         </section>
@@ -242,5 +275,42 @@
 
     .img-container {
         height: 600px; /* Matches max-h-[600px] of images */
+    }
+
+    @media (max-width: 767px) {
+        .home-section {
+            padding-top: 80px; /* Adjust based on your header height */
+        }
+
+        .text-carousel-container {
+            width: 90vw; /* Adjust width for mobile screens */
+            margin: 0 auto; /* Center the container */
+        }
+
+        .text-item {
+            padding: 0 10px; /* Further adjust padding for smaller screens */
+        }
+
+        .wrapper {
+            height: 15vh; /* Adjust height for mobile screens */
+            width: 100vw; /* Ensure full width */
+        }
+
+        .img-item {
+            width: 200px; /* Adjust width for mobile screens */
+        }
+
+        .text-carousel {
+            animation: scrollText 15s linear infinite; /* Adjust animation duration for mobile screens */
+        }
+
+        @keyframes scrollText {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
     }
 </style>

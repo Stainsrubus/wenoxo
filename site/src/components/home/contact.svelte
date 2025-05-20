@@ -140,11 +140,11 @@
 </script>
 
 <div class="px-4 pt-12 bg-black text-white">
-	<div class="flex container flex-col md:flex-row justify-between items-center">
+	<div class="flex lg:container flex-col md:flex-row justify-between items-center">
 		<div class="text-center w-full md:w-1/3 md:text-left mb-8 md:mb-0">
-			<h2 class="lg:text-7xl md:text-6xl text-5xl leading-normal font-bold">Shall we get started?</h2>
+			<h2 class="lg:text-6xl md:text-5xl text-3xl leading-normal font-bold">Shall we get started?</h2>
 		</div>
-		<div class="w-full md:w-2/3">
+		<div class="w-full  md:w-2/3">
 			<form class="p-6 rounded-lg" on:submit={handleSubmit}>
 				{#if formMessage}
 					<p class="mb-4 text-sm {formMessageType === 'success' ? 'text-green-500' : 'text-red-500'}">
