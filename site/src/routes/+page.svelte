@@ -150,13 +150,13 @@
   </div>
 
   <div id="service" class="mt-0">
-    <HowWeWork />
-  </div>
 
+  </div>
+  <HowWeWork />
   <div id="howWeWork" class="mt-0">
-    <Service />
-  </div>
 
+  </div>
+  <Service />
   <div id="contact" class="mt-0">
     <Contact />
   </div>
